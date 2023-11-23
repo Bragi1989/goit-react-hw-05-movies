@@ -20,18 +20,18 @@ function Cast() {
     fetchCast();
   }, [movieId]);
 
-  const fetchActorPhotos = async () => {
-    const actorsWithPhotos = await Promise.all(
-      cast.map(async (actor) => {
-        const actorDetails = await Api.getActorDetails(actor.id);
-        return { ...actor, photo: actorDetails.profile_path };
-      })
-    );
-
-    setCast(actorsWithPhotos);
-  };
-
   useEffect(() => {
+    const fetchActorPhotos = async () => {
+      const actorsWithPhotos = await Promise.all(
+        cast.map(async (actor) => {
+          const actorDetails = await Api.getActorDetails(actor.id);
+          return { ...actor, photo: actorDetails.profile_path };
+        })
+      );
+
+      setCast(actorsWithPhotos);
+    };
+
     if (cast.length > 0) {
       fetchActorPhotos();
     }
