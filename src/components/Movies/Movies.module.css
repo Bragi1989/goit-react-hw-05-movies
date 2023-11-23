@@ -1,5 +1,24 @@
+.movieMenu {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.movieList {
+    list-style: none;
+    padding: 0;
+}
+
+.movieItem { 
+padding-top: 10px;
+}
+
 .movieLink {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
+text-decoration: none;
+color: inherit;
+cursor: pointer;
+}
+
+.movieLink:hover,
+.movieLink:focus {
+    color: aqua;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Api from '../../services/Api';
+import css from '../Cast/Cast.module.css'
 
 function Cast() {
   const { movieId } = useParams();
@@ -39,13 +40,13 @@ function Cast() {
   return (
     <div>
       <h2>Cast</h2>
-      <ul>
+      <ul className={css.castList}>
         {cast.map((actor) => (
-          <li key={actor.id}>
-            <img
-              src={`https://image.tmdb.org/t/p/w200${actor.photo}`}
+          <li className={css.castItem} key={actor.id}>
+            <img className={css.castLink}
               alt={`${actor.name} headshot`}
-            />
+              src={`https://image.tmdb.org/t/p/w200${actor.photo}`}
+              />
             {actor.name}
           </li>
         ))}

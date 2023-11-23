@@ -1,0 +1,19 @@
+.castList {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    gap: 16px;
+}
+
+.castItem {
+    width: 200px;
+    height: 350px;
+    border: 2px solid #000;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.castLink{
+    width: 200px;
+    height: 300px;
+    border: 1px solid #000;
+}
