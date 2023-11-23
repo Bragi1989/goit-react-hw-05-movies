@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as Api from '../../services/Api';
-import css from '../Cast/Cast.module.css'
+import css from '../Cast/Cast.module.css';
 
 function Cast() {
   const { movieId } = useParams();
@@ -35,7 +35,7 @@ function Cast() {
     if (cast.length > 0) {
       fetchActorPhotos();
     }
-    }, [cast]);
+  }, [cast]);
 
   return (
     <div>
@@ -43,10 +43,13 @@ function Cast() {
       <ul className={css.castList}>
         {cast.map((actor) => (
           <li className={css.castItem} key={actor.id}>
-            <img className={css.castLink}
-              alt={`${actor.name} headshot`}
-              src={`https://image.tmdb.org/t/p/w200${actor.photo}`}
+            {actor.photo && (
+              <img
+                className={css.castLink}
+                alt={`${actor.name} headshot`}
+                src={`https://image.tmdb.org/t/p/w200${actor.photo}`}
               />
+            )}
             {actor.name}
           </li>
         ))}
