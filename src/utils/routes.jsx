@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Home from '../components/Home/Home.jsx';
 import Movies from '../components/Movies/Movies.jsx';
 import MovieDetails from '../components/MovieDetails/MovieDetails.jsx';

@@ -39,11 +39,11 @@ function MovieDetails() {
      
 
       <nav>
-        <ul class={css.moviedetailsMenu}>
-          <li class={css.moviedetailsList}>
+        <ul className={css.moviedetailsMenu}>
+          <li className={css.moviedetailsList}>
             <Link className={css.moviedetailsLink} to={`/movies/${movieId}/cast`}>Cast</Link>
           </li>
-          <li class={css.moviedetailsList}>
+          <li className={css.moviedetailsList}>
             <Link className={css.moviedetailsLink} to={`/movies/${movieId}/reviews`}>Reviews</Link>
           </li>
         </ul>

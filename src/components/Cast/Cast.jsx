@@ -35,7 +35,7 @@ function Cast() {
     if (cast.length > 0) {
       fetchActorPhotos();
     }
-  }, [cast]);
+    }, [cast]);
 
   return (
     <div>
