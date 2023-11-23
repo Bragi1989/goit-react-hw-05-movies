@@ -1,43 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import * as Api from '../../services/Api';
 import { useParams } from 'react-router-dom';
-import { getMovieReviews } from '../../services/Api.jsx';
 
-import styles from './Reviews.module.css';
-
-const Reviews = () => {
+function Reviews() {
   const { movieId } = useParams();
-  const [reviews, setReviews] = useState([]);
+  const [movieReviews, setMovieReviews] = useState(null);
 
   useEffect(() => {
-    const fetchMovieReviews = async () => {
-      try {
-        const movieReviews = await getMovieReviews(movieId);
-        setReviews(movieReviews.results);
-      } catch (error) {
-        console.error('Error fetching movie reviews:', error);
-      }
-    };
-
-    fetchMovieReviews();
+    Api.getMovieReviews(movieId).then((data) => setMovieReviews(data));
   }, [movieId]);
 
   return (
-    <div className={styles.reviewsContainer}>
-      <h2>Reviews</h2>
-      <div className={styles.reviewsList}>
-        {reviews.length > 0 ? (
-          reviews.map((review) => (
-            <div key={review.id} className={styles.reviewCard}>
-              <p>{review.author}</p>
+    <div>
+      <h2>Movie Reviews</h2>
+      {movieReviews && movieReviews.results && movieReviews.results.length > 0 ? (
+        <ul>
+          {movieReviews.results.map((review) => (
+            <li key={review.id}>
+              <h3>{review.author}</h3>
               <p>{review.content}</p>
-            </div>
-          ))
-        ) : (
-          <p>No reviews available.</p>
-        )}
-      </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No reviews available</p>
+      )}
     </div>
   );
-};
+}
 
 export default Reviews;

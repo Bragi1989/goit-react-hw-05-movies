@@ -1,72 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getMovieDetails, getMovieCredits, getMovieReviews } from '../../services/Api.jsx';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
+import { Link, useParams, Route, Routes, useNavigate } from 'react-router-dom';
+import * as Api from '../../services/Api';
 
-import styles from './MovieDetails.module.css';
+const Cast = lazy(() => import('../Cast/Cast'));
+const Reviews = lazy(() => import('../Reviews/Reviews'));
 
-const MovieDetails = () => {
+function MovieDetails() {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
-  const [cast, setCast] = useState([]);
-  const [reviews, setReviews] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const details = await getMovieDetails(movieId);
-        const credits = await getMovieCredits(movieId);
-        const movieReviews = await getMovieReviews(movieId);
-
-        setMovieDetails(details);
-        setCast(credits.cast);
-        setReviews(movieReviews.results);
-      } catch (error) {
-        console.error('Error fetching movie details:', error);
-      }
-    };
-
-    fetchMovieDetails();
+    Api.getMovieDetails(movieId).then((data) => setMovieDetails(data));
   }, [movieId]);
+
+  const goBackToHome = () => {
+    navigate('/');
+  };
 
   if (!movieDetails) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className={styles.movieDetailsContainer}>
+    <div>
+      <button onClick={goBackToHome}>Go back</button>
+
       <h2>{movieDetails.title}</h2>
+      <p>{movieDetails.overview}</p>
       <img
         src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
         alt={movieDetails.title}
       />
-      <p>{movieDetails.overview}</p>
 
-      <h3>Cast</h3>
-      <div className={styles.castList}>
-        {cast.map((actor) => (
-          <div key={actor.id} className={styles.actorCard}>
-            <img
-              src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-              alt={actor.name}
-            />
-            <p>{actor.name}</p>
-          </div>
-        ))}
-      </div>
+      <nav>
+        <ul>
+          <li>
+            <Link to={`/movies/${movieId}/cast`}>Cast</Link>
+          </li>
+          <li>
+            <Link to={`/movies/${movieId}/reviews`}>Reviews</Link>
+          </li>
+        </ul>
+      </nav>
 
-      <h3>Reviews</h3>
-      <div className={styles.reviewsList}>
-        {reviews.map((review) => (
-          <div key={review.id} className={styles.reviewCard}>
-            <p>{review.author}</p>
-            <p>{review.content}</p>
-          </div>
-        ))}
-      </div>
-
-      <Link to="/">Back to Home</Link>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="cast" element={<Cast />} />
+          <Route path="reviews" element={<Reviews />} />
+        </Routes>
+      </Suspense>
     </div>
   );
-};
+}
 
 export default MovieDetails;

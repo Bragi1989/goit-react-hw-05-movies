@@ -1,43 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getMovieCredits } from '../../services/Api.jsx';
+import * as Api from '../../services/Api';
 
-import styles from './Cast.module.css';
-
-const Cast = () => {
+function Cast() {
   const { movieId } = useParams();
   const [cast, setCast] = useState([]);
 
   useEffect(() => {
-    const fetchMovieCredits = async () => {
+    const fetchCast = async () => {
       try {
-        const credits = await getMovieCredits(movieId);
-        setCast(credits.cast);
+        const castData = await Api.getMovieCredits(movieId);
+        setCast(castData.cast);
       } catch (error) {
-        console.error('Error fetching movie credits:', error);
+        console.error('Error fetching cast:', error);
       }
     };
 
-    fetchMovieCredits();
+    fetchCast();
   }, [movieId]);
 
+  const fetchActorPhotos = async () => {
+    const actorsWithPhotos = await Promise.all(
+      cast.map(async (actor) => {
+        const actorDetails = await Api.getActorDetails(actor.id);
+        return { ...actor, photo: actorDetails.profile_path };
+      })
+    );
+
+    setCast(actorsWithPhotos);
+  };
+
+  useEffect(() => {
+    if (cast.length > 0) {
+      fetchActorPhotos();
+    }
+  }, [cast]);
+
   return (
-    <div className={styles.castContainer}>
+    <div>
       <h2>Cast</h2>
-      <div className={styles.castList}>
+      <ul>
         {cast.map((actor) => (
-          <div key={actor.id} className={styles.actorCard}>
+          <li key={actor.id}>
             <img
-              src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-              alt={actor.name}
+              src={`https://image.tmdb.org/t/p/w200${actor.photo}`}
+              alt={`${actor.name} headshot`}
             />
-            <p>{actor.name}</p>
-            <p>Character: {actor.character}</p>
-          </div>
+            {actor.name}
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
-};
+}
 
 export default Cast;

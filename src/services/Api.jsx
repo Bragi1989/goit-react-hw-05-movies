@@ -10,9 +10,9 @@ const instance = axios.create({
   },
 });
 
-const fetchTrending = async () => {
+const getTrendingMovies = async () => {
   try {
-    const response = await instance.get('/trending/all/day'); // Правильний шлях для отримання популярних фільмів
+    const response = await instance.get('/trending/all/day');
     return response.data;
   } catch (error) {
     console.error('Error fetching trending movies:', error);
@@ -34,7 +34,7 @@ const searchMovies = async (query) => {
 
 const getMovieDetails = async (movieId) => {
   try {
-    const response = await instance.get(`/movie/${movieId}`); // Правильний шлях для отримання деталей фільму
+    const response = await instance.get(`/movie/${movieId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching movie details:', error);
@@ -44,7 +44,7 @@ const getMovieDetails = async (movieId) => {
 
 const getMovieCredits = async (movieId) => {
   try {
-    const response = await instance.get(`/movie/${movieId}/credits`); // Правильний шлях для отримання акторського складу фільму
+    const response = await instance.get(`/movie/${movieId}/credits`);
     return response.data;
   } catch (error) {
     console.error('Error fetching movie credits:', error);
@@ -54,12 +54,28 @@ const getMovieCredits = async (movieId) => {
 
 const getMovieReviews = async (movieId) => {
   try {
-    const response = await instance.get(`/movie/${movieId}/reviews`); // Правильний шлях для отримання відгуків на фільм
+    const response = await instance.get(`/movie/${movieId}/reviews`);
     return response.data;
   } catch (error) {
     console.error('Error fetching movie reviews:', error);
     throw error;
   }
 };
+const getActorDetails = async (actorId) => {
+  try {
+    const response = await instance.get(`/person/${actorId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching actor details:', error);
+    throw error;
+  }
+};
 
-export { fetchTrending, searchMovies, getMovieDetails, getMovieCredits, getMovieReviews };
+export {
+  getTrendingMovies,
+  searchMovies,
+  getMovieDetails,
+  getMovieCredits,
+  getMovieReviews,
+  getActorDetails,
+};
