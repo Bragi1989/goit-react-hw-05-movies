@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import * as Api from '../../services/Api';
-import css from '../Movies/Movies.module.css'
+import css from '../Movies/Movies.module.css';
+import MovieList from './MovieList';
 
 const Movies = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,13 +18,7 @@ const Movies = () => {
       <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
       <button onClick={handleSearch}>Search</button>
 
-      <ul className={css.movieList}>
-        {searchResults.map((movie) => (
-          <li className={css.movieItem} key={movie.id}>
-            <Link className={css.movieLink} to={`/movies/${movie.id}`}>{movie.title}</Link>
-          </li>
-        ))}
-      </ul>
+      <MovieList movies={searchResults} />
     </div>
   );
 };
