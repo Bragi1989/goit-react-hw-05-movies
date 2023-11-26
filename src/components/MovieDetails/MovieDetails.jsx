@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense, useRef } from 'react';
+import React, { useEffect, useState, lazy, Suspense, } from 'react';
 import { Link, useParams, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import * as Api from '../../services/Api';
 import css from '../MovieDetails/MovieDetails.module.css';
