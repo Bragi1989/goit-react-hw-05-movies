@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import * as Api from '../../services/Api';
 import css from '../Movies/Movies.module.css';
 import MovieList from './MovieList';
