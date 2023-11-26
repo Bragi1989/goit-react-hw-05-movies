@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 const Home = lazy(() => import('./Home/Home'));
 const Movies = lazy(() => import('./Movies/Movies'));
@@ -7,6 +7,7 @@ const MovieDetails = lazy(() => import('./MovieDetails/MovieDetails'));
 const Cast = lazy(() => import('./Cast/Cast'));
 const Reviews = lazy(() => import('./Reviews/Reviews'));
 const Header = lazy(() => import('./Header/Header'));
+const LoginForm = lazy(() => import('./LoginForm/LoginForm'));
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             </MovieDetails>
           }
         />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Suspense>
   );

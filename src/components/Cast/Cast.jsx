@@ -24,8 +24,13 @@ function Cast() {
     const fetchActorPhotos = async () => {
       const actorsWithPhotos = await Promise.all(
         cast.map(async (actor) => {
-          const actorDetails = await Api.getActorDetails(actor.id);
-          return { ...actor, photo: actorDetails.profile_path };
+          try {
+            const actorDetails = await Api.getActorDetails(actor.id);
+            return { ...actor, photo: actorDetails.profile_path };
+          } catch (error) {
+            console.error(`Error fetching details for actor ${actor.id}:`, error);
+            return actor;
+          }
         })
       );
 
@@ -41,8 +46,8 @@ function Cast() {
     <div>
       <h2>Cast</h2>
       <ul className={css.castList}>
-        {cast.map((actor) => (
-          <li className={css.castItem} key={actor.id}>
+        {cast.map((actor, index) => (
+          <li className={css.castItem} key={`${actor.id}-${index}`}>
             {actor.photo && (
               <img
                 className={css.castLink}

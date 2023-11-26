@@ -1,5 +1,5 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
-import { Link, useParams, Route, Routes, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, lazy, Suspense, useRef } from 'react';
+import { Link, useParams, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import * as Api from '../../services/Api';
 import css from '../MovieDetails/MovieDetails.module.css';
 
@@ -9,14 +9,29 @@ const Reviews = lazy(() => import('../Reviews/Reviews'));
 function MovieDetails() {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    Api.getMovieDetails(movieId).then((data) => setMovieDetails(data));
-  }, [movieId]);
+    const params = new URLSearchParams(location.search);
+    const query = params.get('query');
+    setSearchQuery(query || '');
 
-  const goBackToHome = () => {
-    navigate(-1);
+    Api.getMovieDetails(movieId).then((data) => setMovieDetails(data));
+  }, [movieId, location.search]);
+
+  const goBack = () => {
+    const fromSearch = location.state?.fromSearch;
+
+    if (fromSearch) {
+      navigate(`/movies?query=${encodeURIComponent(searchQuery)}`, {
+        state: { fromSearch: true, searchQuery },
+      });
+    } else {
+      const previousQuery = location.state?.searchQuery || searchQuery;
+      navigate(`/movies?query=${encodeURIComponent(previousQuery)}`);
+    }
   };
 
   if (!movieDetails) {
@@ -25,7 +40,7 @@ function MovieDetails() {
 
   return (
     <div className={css.moviedetailsSection}>
-      <button className={css.moviedetailsButton} onClick={goBackToHome}>
+      <button className={css.moviedetailsButton} onClick={goBack}>
         Go back
       </button>
       <div className={css.moviedetailsList}>
@@ -60,8 +75,8 @@ function MovieDetails() {
 
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path="cast" element={<Cast />} />
-          <Route path="reviews" element={<Reviews />} />
+          <Route path="cast" element={<Cast movieId={movieId} />} />
+          <Route path="reviews" element={<Reviews movieId={movieId} />} />
         </Routes>
       </Suspense>
     </div>
