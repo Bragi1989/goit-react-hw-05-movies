@@ -7,7 +7,7 @@ const MovieDetails = lazy(() => import('./MovieDetails/MovieDetails'));
 const Cast = lazy(() => import('./Cast/Cast'));
 const Reviews = lazy(() => import('./Reviews/Reviews'));
 const Header = lazy(() => import('./Header/Header'));
-const LoginForm = lazy(() => import('./LoginForm/LoginForm'));
+
 
 function App() {
   return (
